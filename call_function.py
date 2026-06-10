@@ -21,7 +21,7 @@ function_map: dict[str, Callable[..., str]] = {
     "write_file": write_file,
 }
 
-def call_function(function_call: types.FunctionCall, verbose: bool = False) -> types.Content:
+def call_function(function_call: types.FunctionCall, verbose: bool = False, working_dir: str = "./calculator") -> types.Content:
     function_name = function_call.name or ""
 
     if verbose:
@@ -42,7 +42,7 @@ def call_function(function_call: types.FunctionCall, verbose: bool = False) -> t
 
     # Bước 6: shallow copy args, thêm working_directory
     args = dict(function_call.args) if function_call.args else {}
-    args["working_directory"] = "./calculator"
+    args["working_directory"] = working_dir
 
     # Bước 8: gọi function
     function_result = function_map[function_name](**args)

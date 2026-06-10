@@ -1,6 +1,6 @@
 # AI Agent — Vibe Coding & Understanding with Gemini API
 
-A functional AI coding agent built in Python using the Gemini API. The agent can autonomously explore a codebase, read files, run Python scripts, and write/fix code — all driven by natural language prompts.
+A functional AI coding agent built in Python using the Gemini API. The agent can autonomously explore any codebase, read files, run Python scripts, and write/fix code — all driven by natural language prompts.
 
 Built as part of the [Boot.dev AI Agent course](https://www.boot.dev), with hands-on experimentation using Google's Gemini API.
 
@@ -14,6 +14,7 @@ Built as part of the [Boot.dev AI Agent course](https://www.boot.dev), with hand
 - **Execute Python files** with optional arguments and timeout protection
 - **Agent loop** — iterates up to 20 turns, calling tools until a final response is produced
 - **Path traversal protection** — all tools validate paths against the working directory
+- **Works with any project** — point the agent at any directory via `--dir`
 
 ---
 
@@ -64,11 +65,20 @@ GEMINI_API_KEY=your_api_key_here
 ## Usage
 
 ```bash
-# Basic usage
+# Basic usage — default working directory is ./calculator
 uv run main.py "how does the calculator render results to the console?"
+
+# Point to any project directory
+uv run main.py "explain the code structure" --dir ./my-project
+
+# WSL users — use Linux path format for Windows directories
+uv run main.py "explain the flow" --dir "/mnt/c/Code/MyProject"
 
 # With verbose output (shows tool calls and results)
 uv run main.py "fix the bug: 3 + 7 * 2 shouldn't be 20." --verbose
+
+# Combine flags
+uv run main.py "write unit tests for this project" --dir ./my-project --verbose
 ```
 
 **Example output:**
@@ -101,7 +111,7 @@ LLM reads result → decides next step
 Final Response printed
 ```
 
-The agent never sees outside the `./calculator` working directory — all tools enforce path validation to prevent unauthorized file access.
+All tools enforce path validation — the agent can only access files inside the specified working directory.
 
 ---
 

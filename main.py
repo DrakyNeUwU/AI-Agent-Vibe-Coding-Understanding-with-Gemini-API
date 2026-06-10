@@ -13,9 +13,9 @@ client = genai.Client(api_key=api_key)
 
 parser = argparse.ArgumentParser(description="Chatbot")
 parser.add_argument("user_prompt", type=str, help="User prompt")
+parser.add_argument("--dir", type=str, default="./calculator")
 parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
 args = parser.parse_args()
-
 messages: list[types.Content] = [
     types.Content(role="user", parts=[types.Part(text=args.user_prompt)])
 ]
@@ -52,7 +52,7 @@ for _ in range(20):
     # Bước 3: gọi từng function, collect results
     function_responses = []
     for function_call in response.function_calls:
-        function_call_result = call_function(function_call, args.verbose)
+        function_call_result = call_function(function_call, args.verbose, args.dir)
 
         if not function_call_result.parts:
             raise Exception("No parts in function call result")
